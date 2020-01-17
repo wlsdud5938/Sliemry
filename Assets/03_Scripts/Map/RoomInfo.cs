@@ -26,9 +26,12 @@ public class RoomInfo : MonoBehaviour
         CloseEveryGate();
 
         // 해당 방의 젬그룹 중 랜덤으로 하나 활성화
-        int rand = Random.Range(0, gemGroups.Length);
-        selectedGemGroup = gemGroups[rand];
-        selectedGemGroup.gameObject.SetActive(true);
+        if (gemGroups.Length > 0)
+        {
+            int rand = Random.Range(0, gemGroups.Length);
+            selectedGemGroup = gemGroups[rand];
+            selectedGemGroup.gameObject.SetActive(true);
+        }
     }
 
     // 입구와 출구 방향에 따른 웨이브 경로 포인트 반환/ 상 = 0, 하 = 1, 좌 = 2, 우 = 3

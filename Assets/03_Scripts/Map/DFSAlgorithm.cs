@@ -49,15 +49,9 @@ public class DFSAlgorithm : MonoBehaviour
             //// 스택값 출력
             int count = stack.Count; //스택의 크기를 받을 변수
             int[] arr = stack.ToArray();
-            string str = "";
-            for (int i = 0; i < count; i++)
-            {
-                str += arr[i].ToString() + " ";
 
-            }
             if (arr.Length>=7 && arr.Length<=9)
             {
-                Debug.Log(str + "출력완료");
                 path.Add(arr);
             }
             //// 스택값 출력

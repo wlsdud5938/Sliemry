@@ -9,10 +9,17 @@ public class RoomInfo : MonoBehaviour
 
     private HallInfo hallInfo;          // 해당 방에 연결된 통로 정보
     private GemGroup selectedGemGroup;  // 랜덤으로 선택된 젬 그룹
-    private List<int> connectedGate;    // 연결된 통로 방향들/ 상 = 0, 하 = 1, 좌 = 2, 우 = 3    
+    [HideInInspector]
+    public List<int> connectedGate;    // 연결된 통로 방향들/ 상 = 0, 하 = 1, 좌 = 2, 우 = 3    
+    [HideInInspector]
+    public bool isVisited = false;      // 해당 방 방문 여부
+
+    [HideInInspector]
+    public RoomIcon roomIcon;           // 해당 방과 링크된 룸 아이콘
 
     public const int UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3;
-    
+    public static int UNKNOWN = 0, NORMAL = 1, WAVE = 2, CORE = 3, ENEMY = 4;
+
     // Ground 배치 후 룸 초기화
     public void RoomInit()
     {
@@ -21,7 +28,7 @@ public class RoomInfo : MonoBehaviour
         // 통로 연결 정보 입력
         connectedGate = new List<int>();
         for (int i = 0; i < hallInfo.gates.Length; ++i) if (hallInfo.gates[i] != null) connectedGate.Add(i);
-
+        
         // 모든 통로 닫기
         CloseEveryGate();
 
@@ -78,12 +85,18 @@ public class RoomInfo : MonoBehaviour
     // 특정 방향 문 열기
     public void OpenGate(int dirrection)
     {
+        // 문이 없거나 이미 열려있으면 패스
+        if (hallInfo.gates[dirrection] == null) return;
+        if (hallInfo.gates[dirrection].isOpen) return;
         hallInfo.OpenGate(dirrection);
     }
 
     // 특정 방향 문 닫기
     public void CloseGate(int dirrection)
     {
+        // 문이 없거나 이미 닫혀있으면 패스
+        if (hallInfo.gates[dirrection] == null) return;
+        if (!hallInfo.gates[dirrection].isOpen) return;
         hallInfo.CloseGate(dirrection);
     }
 }

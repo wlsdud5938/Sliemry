@@ -5,7 +5,7 @@ using UnityEngine;
 public class MapTest : MonoBehaviour
 {
     public RoomManager roomManager;
-    public RoomInfo[] testRooms0, testRooms1, testRooms2, testRooms3;
+    public RoomInfo[] testRooms0, testRooms1, testRooms2, testRooms3;    
 
     private void Start()
     {
@@ -22,5 +22,35 @@ public class MapTest : MonoBehaviour
         roomManager.waveRooms[3] = new Vector2Int(1, 0);
         roomManager.waveRooms[4] = new Vector2Int(2, 0);
         roomManager.waveRooms[5] = new Vector2Int(3, 0);
+    }
+
+    public void RoomClear()
+    {
+        roomManager.RoomClear();
+    }
+
+    public void MoveUp()
+    {
+        Vector2Int vec = roomManager.currentRoom;
+        vec.y += 1;
+        roomManager.VisitRoom(vec);
+    }
+    public void MoveDown()
+    {
+        Vector2Int vec = roomManager.currentRoom;
+        vec.y -= 1;
+        roomManager.VisitRoom(vec);
+    }
+    public void MoveLeft()
+    {
+        Vector2Int vec = roomManager.currentRoom;
+        vec.x -= 1;
+        roomManager.VisitRoom(vec);
+    }
+    public void MoveRight()
+    {
+        Vector2Int vec = roomManager.currentRoom;
+        vec.x += 1;
+        roomManager.VisitRoom(vec);
     }
 }

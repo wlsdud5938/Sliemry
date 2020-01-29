@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DFSAlgorithm : MonoBehaviour
 {
-    private int[,] maps = new int[16, 16];      //DFS 인접행렬
-    private bool[] visit = new bool[16];   //방문했나 안했나 판단할 변수
+    private int[,] maps = new int[20, 20];      //DFS 인접행렬
+    private bool[] visit = new bool[20];   //방문했나 안했나 판단할 변수
     Stack<int> stack = new Stack<int>();
 
     public DFSAlgorithm()
@@ -14,15 +14,15 @@ public class DFSAlgorithm : MonoBehaviour
         //스택을 초기화하고
         //table 및  visit 변수를 할당 한다.
 
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 20; i++)
         {
-            for (int j = 0; j < 16; j++)
+            for (int j = 0; j < 20; j++)
             {
                 maps[i, j] = 0;
             }
         }
 
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 20; i++)
         {
             visit[i] = false;
         }
@@ -61,7 +61,7 @@ public class DFSAlgorithm : MonoBehaviour
         }
 
 
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 20; i++)
         {
             if (maps[v, i] == 1 && !visit[i])
             {

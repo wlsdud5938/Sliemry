@@ -33,38 +33,40 @@ public class test4x4 : MonoBehaviour
 
     List<int[]> path = new List<int[]>();
 
-    int[,] matrix = { { -1, -1, -1, -1 }, { -1, -1, -1, -1 }, { -1, -1, -1, -1 }, { -1, -1, -1, -1 } };
-    int[,] doorMatrix = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } };
+    int[,] matrix = { { -1, -1, -1, -1}, { -1, -1, -1, -1}, { -1, -1, -1, -1}, { -1, -1, -1, -1 }, { -1, -1, -1, -1 } };
+    int[,] doorMatrix = { { 0, 0, 0, 0}, { 0, 0, 0, 0}, { 0, 0, 0, 0}, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } };
 
     int[,] realMatrix = new int[14, 14];
     int pathSize = 0;
     int min = 5;
 
-    int[,] ta = new int[16, 16];
+    Queue<int[]> openRoom = new Queue<int[]>();
+
+    int[,] ta = new int[20, 20];
 
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 20; i++)
         {
-            for (int j = 0; j < 16; j++)
+            for (int j = 0; j < 20; j++)
             {
-                if (i - 1 == j || i + 1 == j || i + 4 == j || i - 4 == j)
+                if (i - 1 == j || i + 1 == j || i + 5 == j || i - 5 == j)
                     ta[i, j] = 1;
                 else
                     ta[i, j] = 0;
-                if ((i + 1 == j && i % 4 == 3) || (i - 1 == j && i % 4 == 0))
+                if ((i + 1 == j && i % 5 == 4) || (i - 1 == j && i % 5 == 0))
                     ta[i, j] = 0;
             }
         }
 
-        x1 = Random.Range(0, 3);
-        x2 = Random.Range(0, 3);
-        y1 = Random.Range(0, 3);
-        y2 = Random.Range(0, 3);
+        x1 = Random.Range(0, 4);
+        x2 = Random.Range(0, 4);
+        y1 = Random.Range(0, 4);
+        y2 = Random.Range(0, 4);
         if (x1 == x2 && y1 == y2)
         {
-            if (y2 != 3)
+            if (y2 != 4)
                 y2++;
             else
                 y2--;
@@ -76,7 +78,7 @@ public class test4x4 : MonoBehaviour
         start.transform.position = new Vector3(x1, y1);
         end.transform.position = new Vector3(x2, y2);
         DFSAlgorithm d = new DFSAlgorithm();
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 20; i++)
         {
             for (int j = 0; j < i; j++)
             {
@@ -84,58 +86,44 @@ public class test4x4 : MonoBehaviour
                     d.inputData(i, j);
             }
         }
-        startNode = x1 + y1 * 4;
-        endNode = x2 + y2 * 4;
+        startNode = x1 + y1 * 5;
+        endNode = x2 + y2 * 5;
         d.DFS(startNode, endNode, path);
         int ran = Random.Range(0, path.Count);
+
+        string st = "";
+        for(int i=0;i< path[ran].Length;i++)
+        {
+            st += path[ran][i].ToString() + " ";
+        }
+        Debug.Log(st);
+        Debug.Log(matrix);
 
         for (int j = 0; j < path[ran].Length; j++)
         {
             if (j != 0 && j != path[ran].Length - 1)
             {
-                Vector2 v = new Vector2(path[ran][j] % 4, path[ran][j] / 4);
+                Vector2 v = new Vector2(path[ran][j] % 5, path[ran][j] / 5);
                 matrix[(int)v.x, (int)v.y] = 0;
+                Debug.Log(v.x.ToString() + " " + v.y.ToString());
+
                 CheckTBLR((int)v.x, (int)v.y);
-                x = path[ran][j] % 4 - x2;
-                y = path[ran][j] / 4 - y2;
-                Debug.Log(x.ToString() + " " + y.ToString());
+                x = path[ran][j] % 5 - x2;
+                y = path[ran][j] / 5 - y2;
+                //Debug.Log(x.ToString() + " " + y.ToString());
                 x2 += x;
                 y2 += y;
                 Instantiate(cube, v, Quaternion.identity);
             }
         }
 
-        string str = "";
-        for (int j = 0; j < path[ran].Length; j++)
-        {
-            str += path[ran][j].ToString() + " ";
-        }
-        Debug.Log(str);
-
-        str = "";
-        for (int i = 3; i >= 0; i--)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                str += matrix[j, i] + " ";
-            }
-            Debug.Log(str);
-            str = "";
-        }
-        str = "";
-
-        for (int i = 3; i >= 0; i--)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                str += doorMatrix[j, i] + " ";
-            }
-            Debug.Log(str);
-            str = "";
-        }
-
         MatrixMoveToReal();
-
+        for(int i =0;i<openRoom.Count;i++)
+        {
+            int[] pos = openRoom.Dequeue();
+            OpenTheDoor(pos[0], pos[1]);
+            CloseTheDoor(pos[0], pos[1]);
+        }
     }
 
 
@@ -157,7 +145,7 @@ public class test4x4 : MonoBehaviour
             doorMatrix[a, b] |= 2;
             doorMatrix[a - 1, b] |= 1;
         }
-        if (a < 3 && matrix[a + 1, b] != -1)
+        if (a < 4 && matrix[a + 1, b] != -1)
         {
             doorMatrix[a, b] |= 1;
             doorMatrix[a + 1, b] |= 2;
@@ -224,13 +212,18 @@ public class test4x4 : MonoBehaviour
 
     void MatrixMoveToReal()
     {
-        for(int i=0;i<4;i++)
+        for (int i = 0; i < 5; i++)
         {
-            for(int j=0;j<4;j++)
+            for (int j = 0; j < 4; j++)
             {
-                if(doorMatrix[i,j] != 0)
+                if (doorMatrix[i, j] != 0)
                 {
                     realMatrix[i + 5, j + 5] = doorMatrix[i, j];
+                    if (matrix[i, j] == 0)
+                    {
+                        int[] enq = { i + 5, j + 5 };
+                        openRoom.Enqueue(enq);
+                    }
                 }
             }
         }

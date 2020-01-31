@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class ColorManager : MonoBehaviour
 {
-    public static Color negativeRed = new Color(1.0f, 0.3f, 0.3f);
+    public static Color negativeRed = new Color(0.5f, 0, 0);
 }

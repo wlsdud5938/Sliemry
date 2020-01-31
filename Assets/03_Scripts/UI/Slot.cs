@@ -27,6 +27,8 @@ public class Slot : MonoBehaviour
 
     public void ShowSlotContent(bool isBuildMode, int index)
     {
+        if(this.isBuildMode == isBuildMode) ShowCount(isBuildMode, index);
+
         this.isBuildMode = isBuildMode;
         this.index = index;
 
@@ -46,14 +48,12 @@ public class Slot : MonoBehaviour
         // 아이템 이미지 세팅
         int itemCount = DataManager.Instance.userData_item.ItemCount(ItemInfoManager.Instance.itemList[index].itemName);
         if (itemCount == 0) itemImage.sprite = SlotManager.Instance.itemIcons_grey[index];
-        else itemImage.sprite = SlotManager.Instance.itemIcons[index];
-
-        // 갯수 표시
-        //ShowCount(isBuildMode, index);    // 애니메이션에서 호출
+        else itemImage.sprite = SlotManager.Instance.itemIcons[index];        
     }
 
     public void ShowCount()
     {
+        if (index == -1) return;
         ShowCount(isBuildMode, index);
     }
 
@@ -97,8 +97,10 @@ public class Slot : MonoBehaviour
         }
     }
 
-    public void SlotInit()
+    public void SlotInit(bool isBuildMode)
     {
+        this.isBuildMode = isBuildMode;
+        index = -1;
         amount.text = "";
         price.text = "";
         unitImage.gameObject.SetActive(false);

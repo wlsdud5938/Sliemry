@@ -69,14 +69,17 @@ public class SlotManager : MonoBehaviour
 
         for (int i = 0; i < slots.Length; ++i)
         {
-            slots[i].ani.SetBool("isBuildMode", isBuildMode);
-
             if (slotGroup[i] == 0)
             {
-                slots[i].SlotInit();
+                slots[i].SlotInit(isBuildMode);
+                // 애니메이션 조정
+                slots[i].ani.SetBool("isBuildMode", isBuildMode);
                 continue;
             }
             slots[i].ShowSlotContent(isBuildMode, slotGroup[i]);
+            
+            // 애니메이션 조정
+            slots[i].ani.SetBool("isBuildMode", isBuildMode);
         }
     }
 

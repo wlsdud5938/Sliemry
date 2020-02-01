@@ -38,7 +38,7 @@ public class SlotManager : MonoBehaviour
             SelectSlot(5);
 
         // 모드 체인지
-        if (Input.GetMouseButtonDown(1)) ModeChange();
+        //if (Input.GetMouseButtonDown(1)) ModeChange();
 
     }
 
@@ -59,6 +59,12 @@ public class SlotManager : MonoBehaviour
     public void ModeChange()
     {
         SetSlots(!isBuildMode);
+        modeChanger.SetBool("isBuildMode", isBuildMode);
+    }
+
+    public void ModeChange(bool isBuildMode)
+    {
+        SetSlots(isBuildMode);
         modeChanger.SetBool("isBuildMode", isBuildMode);
     }
 
@@ -125,5 +131,8 @@ public class SlotManager : MonoBehaviour
         // 새 슬롯 인덱스 저장 및 켜기
         DataManager.Instance.userData_setting.SelectSlot(number);
         slots[number].SlotOnOff();
+
+        // 커서 따라다니는 아이콘 이미지 업데이트
+        UnitManager.Instance.UpdateUnitIcon();
     }
 }

@@ -11,7 +11,7 @@ public class MapCreater : MonoBehaviour
     public GameObject cube;
 
     public List<GameObject> TBLR;
-    public GameObject ground;
+    public GroundList groundList;
 
     int x1;
     int x2;
@@ -41,6 +41,7 @@ public class MapCreater : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        groundList = transform.GetChild(0).GetComponent<GroundList>();
         //4*5의 경로를 구하기위해 그래프를 메트릭스로 구현
         for (int i = 0; i < 20; i++)
         {
@@ -125,10 +126,10 @@ public class MapCreater : MonoBehaviour
         //문 여느라 시작 끝위치가 지워져서 다시 지정
         matrix[3 - y1, x1] = 1;
         matrix[3 - y2, x2] = 2;
-        for(int i = 0;i<4;i++)
+        for (int i = 0; i < 4; i++)
         {
             string str = "";
-            for(int j=0;j<5;j++)
+            for (int j = 0; j < 5; j++)
             {
                 str += doorMatrix[i, j].ToString() + " ";
             }
@@ -140,7 +141,7 @@ public class MapCreater : MonoBehaviour
 
         roomCount += path[ran].Length;
 
-        while(openRoom.Count > 0 && roomCount  < maxRoom)
+        while (openRoom.Count > 0 && roomCount < maxRoom)
         {
             int[] pos = openRoom.Dequeue();
             OpenTheDoor(pos[0], pos[1]);
@@ -154,12 +155,69 @@ public class MapCreater : MonoBehaviour
             for (int j = 0; j < 15; j++)
             {
                 str += realMatrix[i, j].ToString() + " ";
-                if(realMatrix[i,j] != 0)
+                if (realMatrix[i, j] != 0)
                 {
-                    Vector2 v = new Vector2(j * 30, (14-i)*20);
-                    GameObject rm = Instantiate(TBLR[realMatrix[i, j]-1], v, Quaternion.identity);
-                    GameObject g =  Instantiate(ground, v, Quaternion.identity);
-                    g.transform.parent = rm.transform;
+                    Vector2 v = new Vector2(j * 30, (14 - i) * 20);
+                    GameObject rm = Instantiate(TBLR[realMatrix[i, j] - 1], v, Quaternion.identity);
+
+
+                    if (realMatrix[i, j] == 1)
+                    {
+                        int random = Random.Range(0, groundList.endGround_right.Length);
+                        GameObject g = Instantiate(groundList.endGround_right[random], v, Quaternion.identity);
+                        g.transform.parent = rm.transform;
+                        continue;
+                    }
+                    else if (realMatrix[i, j] == 2)
+                    {
+                        int random = Random.Range(0, groundList.endGround_left.Length);
+                        GameObject g = Instantiate(groundList.endGround_left[random], v, Quaternion.identity);
+                        g.transform.parent = rm.transform;
+                        continue;
+                    }
+                    else if (realMatrix[i, j] == 4)
+                    {
+                        int random = Random.Range(0, groundList.endGround_down.Length);
+                        GameObject g = Instantiate(groundList.endGround_down[random], v, Quaternion.identity);
+                        g.transform.parent = rm.transform;
+                        continue;
+                    }
+                    else if (realMatrix[i, j] == 8)
+                    {
+                        int random = Random.Range(0, groundList.endGround_up.Length);
+                        GameObject g = Instantiate(groundList.endGround_up[random], v, Quaternion.identity);
+                        g.transform.parent = rm.transform;
+                        continue;
+                    }
+                    else if ((realMatrix[i, j] & 1) == 1)
+                    {
+                        int random = Random.Range(0, groundList.connectable_right.Length);
+                        GameObject g = Instantiate(groundList.connectable_right[random], v, Quaternion.identity);
+                        g.transform.parent = rm.transform;
+                        continue;
+                    }
+                    else if ((realMatrix[i, j] & 2) == 2)
+                    {
+                        int random = Random.Range(0, groundList.connectable_left.Length);
+                        GameObject g = Instantiate(groundList.connectable_left[random], v, Quaternion.identity);
+                        g.transform.parent = rm.transform;
+                        continue;
+                    }
+                    else if ((realMatrix[i, j] & 4) == 4)
+                    {
+                        int random = Random.Range(0, groundList.connectable_down.Length);
+                        GameObject g = Instantiate(groundList.connectable_down[random], v, Quaternion.identity);
+                        g.transform.parent = rm.transform;
+                        continue;
+                    }
+                    else if ((realMatrix[i, j] & 8) == 8)
+                    {
+                        int random = Random.Range(0, groundList.connectable_up.Length);
+                        GameObject g = Instantiate(groundList.connectable_up[random], v, Quaternion.identity);
+                        g.transform.parent = rm.transform;
+                        continue;
+                    }
+
                 }
             }
             Debug.Log(str);
@@ -168,6 +226,12 @@ public class MapCreater : MonoBehaviour
         start.transform.position = s;
         Vector2 e = new Vector2((x2 + 5) * 30, (y2 + 6) * 20);
         end.transform.position = e;
+
+        while (openRoom.Count > 0)
+        {
+            int[] a = openRoom.Dequeue();
+            Debug.Log(a[0].ToString() + " " + a[1].ToString());
+        }
 
     }
 
@@ -216,7 +280,7 @@ public class MapCreater : MonoBehaviour
             realMatrix[a - 1, b] |= ran;
             if (realMatrix[a - 1, b] != 0)
             {
-                int[] enq = { a - 1, b};
+                int[] enq = { a - 1, b };
                 openRoom.Enqueue(enq);
                 roomCount++;
             }
@@ -230,7 +294,7 @@ public class MapCreater : MonoBehaviour
             realMatrix[a, b] |= ran;
             ran = ran << 1;
             realMatrix[a + 1, b] |= ran;
-            if (realMatrix[a +1, b] != 0)
+            if (realMatrix[a + 1, b] != 0)
             {
                 int[] enq = { a + 1, b };
                 openRoom.Enqueue(enq);

@@ -22,8 +22,7 @@ public class test4x4 : MonoBehaviour
 
     int x1;
     int x2;
-    int x;
-    int y;
+
     int y1;
     int y2;
 
@@ -32,21 +31,24 @@ public class test4x4 : MonoBehaviour
     public int endNode;
 
     List<int[]> path = new List<int[]>();
-
-    int[,] matrix = { { -1, -1, -1, -1}, { -1, -1, -1, -1}, { -1, -1, -1, -1}, { -1, -1, -1, -1 }, { -1, -1, -1, -1 } };
-    int[,] doorMatrix = { { 0, 0, 0, 0}, { 0, 0, 0, 0}, { 0, 0, 0, 0}, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } };
-
-    int[,] realMatrix = new int[14, 14];
+    //방 생성 유무 판단 메트릭스
+    int[,] matrix = { { -1, -1, -1, -1, -1 }, { -1, -1, -1, -1, -1 }, { -1, -1, -1, -1, -1 }, { -1, -1, -1, -1, -1 } };
+    //생성된 방의 열린문 판단 메트릭스
+    int[,] doorMatrix = { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } };
+    //일차적으로 생성된 방들을 큰 메트릭스로 이동시키기 위한 실제로 맵생성에 사용되는 메트릭스
+    int[,] realMatrix = new int[15, 15];
     int pathSize = 0;
     int min = 5;
-
+    //생성된 방에서 열린 문이 있다면 큐에 저장하여 방을 순차적으로 생성
     Queue<int[]> openRoom = new Queue<int[]>();
-
+    //4*5의 경로를 구하기위한 그래프
     int[,] ta = new int[20, 20];
-
+    int maxRoom = 20;
+    int roomCount = 0;
     // Start is called before the first frame update
     void Start()
     {
+        //4*5의 경로를 구하기위해 그래프를 메트릭스로 구현
         for (int i = 0; i < 20; i++)
         {
             for (int j = 0; j < 20; j++)
@@ -60,10 +62,13 @@ public class test4x4 : MonoBehaviour
             }
         }
 
+        //start와 end를 랜덤한 위치로 배치하기위한 random
         x1 = Random.Range(0, 4);
         x2 = Random.Range(0, 4);
-        y1 = Random.Range(0, 4);
-        y2 = Random.Range(0, 4);
+        y1 = Random.Range(0, 3);
+        y2 = Random.Range(0, 3);
+
+        //start와 end가 우연히 같다면 다시 랜덤돌리는게아니라 그냥 end의 y축을 더하거나 뺀다
         if (x1 == x2 && y1 == y2)
         {
             if (y2 != 4)
@@ -71,12 +76,16 @@ public class test4x4 : MonoBehaviour
             else
                 y2--;
         }
-        x = x1;
-        y = y1;
-        matrix[x1, y1] = 1;
-        matrix[x2, y2] = 2;
+
+        //방생성 유무 판단 메트릭스에 start와 end를 지정
+        matrix[3 - y1, x1] = 1;
+        matrix[3 - y2, x2] = 2;
+
+        //게임내에 start와 end의 위치를 수정
         start.transform.position = new Vector3(x1, y1);
         end.transform.position = new Vector3(x2, y2);
+
+        //4*5에서의 길을 찾기위해 dfs알고리즘에 해당 그래프 삽입
         DFSAlgorithm d = new DFSAlgorithm();
         for (int i = 0; i < 20; i++)
         {
@@ -88,102 +97,148 @@ public class test4x4 : MonoBehaviour
         }
         startNode = x1 + y1 * 5;
         endNode = x2 + y2 * 5;
+        //start에서 end까지의 경로 탐색
         d.DFS(startNode, endNode, path);
         int ran = Random.Range(0, path.Count);
 
-        string st = "";
-        for(int i=0;i< path[ran].Length;i++)
+        //경로에 맞춰 방을 생성하며 각 방의 문을 설정
+        for (int j = 0; j < path[ran].Length - 1; j++)
         {
-            st += path[ran][i].ToString() + " ";
-        }
-        Debug.Log(st);
-        Debug.Log(matrix);
+            Vector2 v = new Vector2(path[ran][j] % 5, path[ran][j] / 5);
+            matrix[3 - (int)v.y, (int)v.x] = 0;
 
-        for (int j = 0; j < path[ran].Length; j++)
-        {
-            if (j != 0 && j != path[ran].Length - 1)
+            switch (path[ran][j + 1] - path[ran][j])
             {
-                Vector2 v = new Vector2(path[ran][j] % 5, path[ran][j] / 5);
-                matrix[(int)v.x, (int)v.y] = 0;
-                Debug.Log(v.x.ToString() + " " + v.y.ToString());
-
-                CheckTBLR((int)v.x, (int)v.y);
-                x = path[ran][j] % 5 - x2;
-                y = path[ran][j] / 5 - y2;
-                //Debug.Log(x.ToString() + " " + y.ToString());
-                x2 += x;
-                y2 += y;
-                Instantiate(cube, v, Quaternion.identity);
+                case 1:
+                    doorMatrix[3 - (int)v.y, (int)v.x] |= 1;
+                    doorMatrix[3 - (int)v.y, (int)v.x + 1] |= 2;
+                    break;
+                case -1:
+                    doorMatrix[3 - (int)v.y, (int)v.x] |= 2;
+                    doorMatrix[3 - (int)v.y, (int)v.x - 1] |= 1;
+                    break;
+                case 5:
+                    doorMatrix[3 - (int)v.y, (int)v.x] |= 8;
+                    doorMatrix[3 - (int)v.y - 1, (int)v.x] |= 4;
+                    break;
+                case -5:
+                    doorMatrix[3 - (int)v.y, (int)v.x] |= 4;
+                    doorMatrix[3 - (int)v.y + 1, (int)v.x] |= 8;
+                    break;
+                default:
+                    Debug.Log("뭔가 잘못됨 ㅅㄱ");
+                    break;
             }
+            if (j != 0)
+                Instantiate(cube, v, Quaternion.identity);
         }
 
+        //15*15 메트릭스로 이동
         MatrixMoveToReal();
-        for(int i =0;i<openRoom.Count;i++)
+
+        //for (int i = 0; i < 14; i++)
+        //{
+        //    string str = "";
+        //    for (int j = 0; j < 14; j++)
+        //    {
+        //        str += realMatrix[i, j].ToString() + " ";
+        //    }
+        //    Debug.Log(str);
+        //}
+
+        roomCount += path[ran].Length;
+
+        while(openRoom.Count > 0 && roomCount  < maxRoom)
         {
             int[] pos = openRoom.Dequeue();
             OpenTheDoor(pos[0], pos[1]);
-            CloseTheDoor(pos[0], pos[1]);
+            //CloseTheDoor(pos[0], pos[1]);
         }
-    }
 
-
-    void CheckTBLR(int a, int b)
-    {
-        matrix[a, b] = 0;
-        if (b < 3 && matrix[a, b + 1] != -1)
+        for (int i = 0; i < 15; i++)
         {
-            doorMatrix[a, b] |= 8;
-            doorMatrix[a, b + 1] |= 4;
+            string str = "";
+            for (int j = 0; j < 15; j++)
+            {
+                str += realMatrix[i, j].ToString() + " ";
+                if(realMatrix[i,j] != 0)
+                {
+                    Vector2 v = new Vector2(j, 14-i);
+                    Instantiate(cube, v, Quaternion.identity);
+                }
+            }
+            Debug.Log(str);
         }
-        if (b > 0 && matrix[a, b - 1] != -1)
-        {
-            doorMatrix[a, b] |= 4;
-            doorMatrix[a, b - 1] |= 8;
-        }
-        if (a > 0 && matrix[a - 1, b] != -1)
-        {
-            doorMatrix[a, b] |= 2;
-            doorMatrix[a - 1, b] |= 1;
-        }
-        if (a < 4 && matrix[a + 1, b] != -1)
-        {
-            doorMatrix[a, b] |= 1;
-            doorMatrix[a + 1, b] |= 2;
-        }
+        Vector2 s = new Vector2(start.transform.position.x + 5, start.transform.position.y + 5);
+        Vector2 e = new Vector2(end.transform.position.x + 5, end.transform.position.y + 5);
+        start.transform.position = s;
+        end.transform.position = e;
     }
 
     void OpenTheDoor(int a, int b)
     {
-        if (realMatrix[a, b + 1] == 0)
+        if (b < 13 && realMatrix[a, b + 1] == 0)
         {
-            int ran = Random.Range(0, 1);
+            int ran = Random.Range(0, 2);
+            if (ran > 0)
+                ran = 1;
+            realMatrix[a, b] |= ran;
+            ran = ran << 1;
+            realMatrix[a, b + 1] |= ran;
+            if (realMatrix[a, b + 1] != 0)
+            {
+                int[] enq = { a, b + 1 };
+                openRoom.Enqueue(enq);
+                roomCount++;
+            }
+        }
+        if (b > 0 && realMatrix[a, b - 1] == 0)
+        {
+            int ran = Random.Range(0, 2);
+            if (ran > 0)
+                ran = 1;
+            ran = ran << 1;
+            realMatrix[a, b] |= ran;
+            ran = ran >> 1;
+            realMatrix[a, b - 1] |= ran;
+            if (realMatrix[a, b - 1] != 0)
+            {
+                int[] enq = { a, b - 1 };
+                openRoom.Enqueue(enq);
+                roomCount++;
+            }
+        }
+        if (a > 0 && realMatrix[a - 1, b] == 0)
+        {
+            int ran = Random.Range(0, 2);
+            if (ran > 0)
+                ran = 1;
             ran = ran << 3;
             realMatrix[a, b] |= ran;
             ran = ran >> 1;
-            realMatrix[a, b + 1] |= ran;
+            realMatrix[a - 1, b] |= ran;
+            if (realMatrix[a - 1, b] != 0)
+            {
+                int[] enq = { a - 1, b};
+                openRoom.Enqueue(enq);
+                roomCount++;
+            }
         }
-        if (realMatrix[a, b - 1] == 0)
+        if (a < 13 && realMatrix[a + 1, b] == 0)
         {
-            int ran = Random.Range(0, 1);
+            int ran = Random.Range(0, 2);
+            if (ran > 0)
+                ran = 1;
             ran = ran << 2;
             realMatrix[a, b] |= ran;
             ran = ran << 1;
-            realMatrix[a, b - 1] |= ran;
-        }
-        if (realMatrix[a - 1, b] == 0)
-        {
-            int ran = Random.Range(0, 1);
-            ran = ran << 1;
-            realMatrix[a, b] |= ran;
-            ran = ran >> 1;
-            realMatrix[a - 1, b] |= ran;
-        }
-        if (realMatrix[a + 1, b] == 0)
-        {
-            int ran = Random.Range(0, 1);
-            realMatrix[a, b] |= ran;
-            ran = ran << 1;
             realMatrix[a + 1, b] |= ran;
+            if (realMatrix[a +1, b] != 0)
+            {
+                int[] enq = { a + 1, b };
+                openRoom.Enqueue(enq);
+                roomCount++;
+            }
         }
     }
     void CloseTheDoor(int a, int b)
@@ -212,9 +267,9 @@ public class test4x4 : MonoBehaviour
 
     void MatrixMoveToReal()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; i++)
         {
-            for (int j = 0; j < 4; j++)
+            for (int j = 0; j < 5; j++)
             {
                 if (doorMatrix[i, j] != 0)
                 {

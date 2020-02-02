@@ -50,7 +50,7 @@ public class DFSAlgorithm : MonoBehaviour
             int count = stack.Count; //스택의 크기를 받을 변수
             int[] arr = stack.ToArray();
 
-            if (arr.Length>=7 && arr.Length<=9)
+            if (arr.Length>=7 && arr.Length<=10)
             {
                 path.Add(arr);
             }

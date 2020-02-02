@@ -41,6 +41,7 @@ public class MapCreater : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        RoomManager roomManager = RoomManager.instance;
         groundList = transform.GetChild(0).GetComponent<GroundList>();
         //4*5의 경로를 구하기위해 그래프를 메트릭스로 구현
         for (int i = 0; i < 20; i++)
@@ -96,33 +97,38 @@ public class MapCreater : MonoBehaviour
         int ran = Random.Range(0, path.Count);
 
         //경로에 맞춰 방을 생성하며 각 방의 문을 설정
+        roomManager.waveRooms = new Vector2Int[path[ran].Length];
         for (int j = 0; j < path[ran].Length - 1; j++)
         {
-            Vector2 v = new Vector2(path[ran][j] % 5, path[ran][j] / 5);
-            matrix[3 - (int)v.y, (int)v.x] = 0;
+            Vector2Int v = new Vector2Int(path[ran][j] % 5, path[ran][j] / 5);
+            matrix[3 - v.y, v.x] = 0;
+
             switch (path[ran][j + 1] - path[ran][j])
             {
                 case 1:
-                    doorMatrix[3 - (int)v.y, (int)v.x] |= 1;
-                    doorMatrix[3 - (int)v.y, (int)v.x + 1] |= 2;
+                    doorMatrix[3 - v.y, v.x] |= 1;
+                    doorMatrix[3 - v.y, v.x + 1] |= 2;
                     break;
                 case -1:
-                    doorMatrix[3 - (int)v.y, (int)v.x] |= 2;
-                    doorMatrix[3 - (int)v.y, (int)v.x - 1] |= 1;
+                    doorMatrix[3 - v.y, v.x] |= 2;
+                    doorMatrix[3 - v.y, v.x - 1] |= 1;
                     break;
                 case 5:
-                    doorMatrix[3 - (int)v.y, (int)v.x] |= 8;
-                    doorMatrix[3 - (int)v.y - 1, (int)v.x] |= 4;
+                    doorMatrix[3 - v.y, v.x] |= 8;
+                    doorMatrix[3 - v.y - 1, v.x] |= 4;
                     break;
                 case -5:
-                    doorMatrix[3 - (int)v.y, (int)v.x] |= 4;
-                    doorMatrix[3 - (int)v.y + 1, (int)v.x] |= 8;
+                    doorMatrix[3 - v.y, v.x] |= 4;
+                    doorMatrix[3 - v.y + 1, v.x] |= 8;
                     break;
                 default:
                     Debug.Log("뭔가 잘못됨 ㅅㄱ");
                     break;
             }
+            v = new Vector2Int((v.x + 5), v.y + 6);
+            roomManager.waveRooms[j] = new Vector2Int(v.x,v.y);
         }
+
         //문 여느라 시작 끝위치가 지워져서 다시 지정
         matrix[3 - y1, x1] = 1;
         matrix[3 - y2, x2] = 2;
@@ -147,6 +153,7 @@ public class MapCreater : MonoBehaviour
             OpenTheDoor(pos[0], pos[1]);
         }
 
+        roomManager.rooms = new RoomInfo[15][];
 
         //방생성
         for (int i = 0; i < 15; i++)
@@ -155,6 +162,9 @@ public class MapCreater : MonoBehaviour
             for (int j = 0; j < 15; j++)
             {
                 str += realMatrix[i, j].ToString() + " ";
+                roomManager.rooms[i] = new RoomInfo[15];
+
+                //방생성과 동시에 바닥 생성하고 바닥을 그 방의 자식오브젝트로 둔다.
                 if (realMatrix[i, j] != 0)
                 {
                     Vector2 v = new Vector2(j * 30, (14 - i) * 20);
@@ -166,12 +176,14 @@ public class MapCreater : MonoBehaviour
                         int random = Random.Range(0, groundList.endGround_right.Length);
                         GameObject g = Instantiate(groundList.endGround_right[random], v, Quaternion.identity);
                         g.transform.parent = rm.transform;
+                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
                         continue;
                     }
                     else if (realMatrix[i, j] == 2)
                     {
                         int random = Random.Range(0, groundList.endGround_left.Length);
                         GameObject g = Instantiate(groundList.endGround_left[random], v, Quaternion.identity);
+                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
                         g.transform.parent = rm.transform;
                         continue;
                     }
@@ -179,6 +191,7 @@ public class MapCreater : MonoBehaviour
                     {
                         int random = Random.Range(0, groundList.endGround_down.Length);
                         GameObject g = Instantiate(groundList.endGround_down[random], v, Quaternion.identity);
+                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
                         g.transform.parent = rm.transform;
                         continue;
                     }
@@ -186,6 +199,7 @@ public class MapCreater : MonoBehaviour
                     {
                         int random = Random.Range(0, groundList.endGround_up.Length);
                         GameObject g = Instantiate(groundList.endGround_up[random], v, Quaternion.identity);
+                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
                         g.transform.parent = rm.transform;
                         continue;
                     }
@@ -193,6 +207,7 @@ public class MapCreater : MonoBehaviour
                     {
                         int random = Random.Range(0, groundList.connectable_right.Length);
                         GameObject g = Instantiate(groundList.connectable_right[random], v, Quaternion.identity);
+                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
                         g.transform.parent = rm.transform;
                         continue;
                     }
@@ -200,6 +215,7 @@ public class MapCreater : MonoBehaviour
                     {
                         int random = Random.Range(0, groundList.connectable_left.Length);
                         GameObject g = Instantiate(groundList.connectable_left[random], v, Quaternion.identity);
+                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
                         g.transform.parent = rm.transform;
                         continue;
                     }
@@ -207,6 +223,7 @@ public class MapCreater : MonoBehaviour
                     {
                         int random = Random.Range(0, groundList.connectable_down.Length);
                         GameObject g = Instantiate(groundList.connectable_down[random], v, Quaternion.identity);
+                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
                         g.transform.parent = rm.transform;
                         continue;
                     }
@@ -214,6 +231,7 @@ public class MapCreater : MonoBehaviour
                     {
                         int random = Random.Range(0, groundList.connectable_up.Length);
                         GameObject g = Instantiate(groundList.connectable_up[random], v, Quaternion.identity);
+                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
                         g.transform.parent = rm.transform;
                         continue;
                     }

@@ -11,6 +11,8 @@ public class RoomManager : MonoBehaviour
         MapInit, GetWayPoints, OpenWaveGates 함수 이외의 것은 신경안써도 됩니다    */
 
     // 미니맵 관련 변수
+
+
     public RoomIcon roomIcon;           // 룸 아이콘 프리팹
     public RectTransform miniMap;       // 아이콘들 부모 오브젝트
     public RectTransform currentIcon;   // 현재 방 표시 아이콘
@@ -35,7 +37,14 @@ public class RoomManager : MonoBehaviour
     // 편의용 상수
     public const int UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3;
     public static int UNKNOWN = 0, NORMAL = 1, WAVE = 2, CORE = 3, ENEMY = 4;
-    
+
+    public static RoomManager instance;
+
+    private void Awake()
+    {
+        RoomManager.instance = this;
+    }
+
     // 배치정보를 다 받아온 후 실행. 각 방들 초기화, 최종 웨이포인트 설정과 해당 경로의 문 열기, 미니맵 아이콘 표시
     public void MapInit()
     {

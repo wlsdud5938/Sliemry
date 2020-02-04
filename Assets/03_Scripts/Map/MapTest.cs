@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class MapTest : MonoBehaviour
 {
+    public bool isRoomMakingMode = false;
     public RoomManager roomManager;
     public RoomInfo[] testRooms0, testRooms1, testRooms2, testRooms3;    
 
     private void Start()
     {
+        if (!isRoomMakingMode) return;
         roomManager.rooms = new RoomInfo[4][];
         roomManager.rooms[0] = testRooms0;
         roomManager.rooms[1] = testRooms1;

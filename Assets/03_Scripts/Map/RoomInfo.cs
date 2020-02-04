@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RoomInfo : MonoBehaviour
 {
+    public bool up, down, left, right;
     public GemGroup[] gemGroups;
     public List<Transform>  upToDown, upToLeft, upToRight, downToLeft, downToRight, leftToRight;    // 각 방향별 웨이포인트
 

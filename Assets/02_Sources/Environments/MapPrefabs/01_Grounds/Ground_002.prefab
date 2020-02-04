@@ -3970,6 +3970,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cb6f1e29125fbe4294534d59dbd5cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  up: 1
+  down: 1
+  left: 1
+  right: 1
   gemGroups:
   - {fileID: 4342112523735710174}
   upToDown:
@@ -4008,6 +4012,9 @@ MonoBehaviour:
   - {fileID: 1005115668411478970}
   - {fileID: 1007396798011085437}
   - {fileID: 7951637122057320341}
+  connectedGate: 
+  isVisited: 0
+  roomIcon: {fileID: 0}
 --- !u!50 &2158387203430618485
 Rigidbody2D:
   serializedVersion: 4

@@ -4197,6 +4197,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cb6f1e29125fbe4294534d59dbd5cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  up: 1
+  down: 1
+  left: 1
+  right: 1
   gemGroups:
   - {fileID: 4342112523735710174}
   upToDown:
@@ -4233,6 +4237,9 @@ MonoBehaviour:
   - {fileID: 2173629575349082618}
   - {fileID: 2232469782387379005}
   - {fileID: 5504589049405809719}
+  connectedGate: 
+  isVisited: 0
+  roomIcon: {fileID: 0}
 --- !u!19719996 &2069833942
 TilemapCollider2D:
   m_ObjectHideFlags: 0

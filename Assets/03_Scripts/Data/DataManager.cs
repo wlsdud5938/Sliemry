@@ -15,7 +15,7 @@ public class DataManager : MonoBehaviour
     [HideInInspector]
     public UserSettingData userData_setting;
     [HideInInspector]
-   // public UserStatusData userData_status;
+    public UserStatusData userData_status;
     
     private List<UserData> datas;
 
@@ -30,12 +30,12 @@ public class DataManager : MonoBehaviour
 
         userData_item = new UserItemData();
         userData_setting = new UserSettingData();
-        //userData_status = new UserStatusData();
+        userData_status = new UserStatusData();
 
         datas = new List<UserData>();
         datas.Add(userData_item);
         datas.Add(userData_setting);
-        //datas.Add(userData_status);
+        datas.Add(userData_status);
 
         DataTest(); // 임시 데이터 입력
     }

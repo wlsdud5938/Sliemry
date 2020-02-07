@@ -7,19 +7,19 @@ public class UserStatusData : UserData
     [System.Serializable]
     public class HealthInfo
     {
-        private float maxHP;
-        private float currentHP;
+        private int maxHP;
+        private int currentHP;
 
-        public HealthInfo(float max, float current)
+        public HealthInfo(int max, int current)
         {
             maxHP = max;
             currentHP = current;
         }
 
-        public float getMaxHP() { return maxHP; }
-        public float getCurrentHP() { return currentHP; }
-        public void setMaxHP(float hp) { maxHP = hp; }
-        public void setCurrentHP(float hp) { currentHP = hp; }
+        public int getMaxHP() { return maxHP; }
+        public int getCurrentHP() { return currentHP; }
+        public void setMaxHP(int hp) { maxHP = hp; }
+        public void setCurrentHP(int hp) { currentHP = hp; }
     }
 
     private bool isBuildMode;
@@ -89,7 +89,7 @@ public class UserStatusData : UserData
         Save<int>(identifier_playingChara, playingChara);
     }
 
-    public void SetHealth(int state, float hp)
+    public void SetHealth(int state, int hp)
     {
         if (state == 0) greenHealth.setCurrentHP(hp);
         if (state == 1) whiteHealth.setCurrentHP(hp);
@@ -97,7 +97,7 @@ public class UserStatusData : UserData
         SaveData();
     }
 
-    public void SetHealth(float hp)
+    public void SetHealth(int hp)
     {
         if (playingChara == 0) greenHealth.setCurrentHP(hp);
         if (playingChara == 1) whiteHealth.setCurrentHP(hp);

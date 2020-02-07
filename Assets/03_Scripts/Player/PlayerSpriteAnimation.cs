@@ -80,6 +80,17 @@ public class PlayerSpriteAnimation : MonoBehaviour
         }
     }    
 
+    public void SetInitialState(bool isRunning, int dirrection)
+    {
+        if (isRunning) sprites = spriteLists_run[dirrection];
+        else if (!isRunning) sprites = spriteLists_idle[dirrection];
+        this.isRunning = isRunning;
+        this.dirrection = dirrection;
+        index = 0;
+        length = sprites.Length;
+        sprite.sprite = sprites[index];
+    }
+
     public void SetFramePerSecond(float value)
     {
         framePerSecond = value;

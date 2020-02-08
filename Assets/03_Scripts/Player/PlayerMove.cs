@@ -61,9 +61,13 @@ public class PlayerMove : MonoBehaviour
     {
         // 캐릭터 변경
         if (Input.GetKeyDown("space"))
-        {   
+        {
             // 쿨타임 중이면 리턴
-            if (!isCharaChangeEnabled) return;
+            if (!isCharaChangeEnabled)
+            {
+                MessageManager.Instance.ShowMessage(AlarmManager.charaChangeCoolTimeAlarm);
+                return;
+            }
 
             // 쿨다운 돌리기
             StartCoroutine(CharaChangeCoolDown());
@@ -172,6 +176,12 @@ public class PlayerMove : MonoBehaviour
         white.SetActive(true);
 
         whiteAni.SetInitialState(isRunning, dirrection);
+    }
+
+    public void ChangeState()
+    {
+        if (characterState == 0) ChangeWhite();
+        else if (characterState == 1) ChangeGreen();
     }
 
     // 캐릭터 전환 쿨타임 쿨다운

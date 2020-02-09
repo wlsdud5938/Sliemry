@@ -48,6 +48,19 @@ public class RoomManager : MonoBehaviour
     // 배치정보를 다 받아온 후 실행. 각 방들 초기화, 최종 웨이포인트 설정과 해당 경로의 문 열기, 미니맵 아이콘 표시
     public void MapInit()
     {
+        // 디버깅
+        for(int i = 0; i < rooms.Length; ++i)
+        {
+            for(int j = 0; i < rooms[i].Length; ++j)
+            {
+                if (rooms[i][j] == null) Debug.Log("(" + i + ", " + j + ") 는 비어 있습니다");
+                else
+                {
+                    Debug.Log("(" + i + ", " + j + ") 방의 이름은 + " + rooms[i][j].name);
+                }
+            }
+        }
+
         roomIcons = new RoomIcon[rooms.Length][];
         for (int i = 0; i < rooms.Length; ++i) roomIcons[i] = new RoomIcon[rooms[i].Length];
 

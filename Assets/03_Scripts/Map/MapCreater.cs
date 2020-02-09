@@ -180,11 +180,47 @@ public class MapCreater : MonoBehaviour
                     {
                         if (k == realMatrix[i, j])
                         {
-                            int randomNum = Random.Range(0, groundList.grounds[k].Count);
-                            GameObject go = Instantiate(groundList.grounds[k][randomNum], v, Quaternion.identity);
-                            go.transform.parent = rm.transform;
-                            roomManager.rooms[i][j] = go.GetComponent<RoomInfo>();
-                            break;
+                            if (k == 1)
+                            {
+                                int randomNum = Random.Range(0, groundList.endGround_right.Length);
+                                GameObject go = Instantiate(groundList.endGround_right[randomNum], v, Quaternion.identity);
+                                go.transform.parent = rm.transform;
+                                roomManager.rooms[i][j] = go.GetComponent<RoomInfo>();
+                                break;
+                            }
+                            else if(k == 2)
+                            {
+                                int randomNum = Random.Range(0, groundList.endGround_left.Length);
+                                GameObject go = Instantiate(groundList.endGround_left[randomNum], v, Quaternion.identity);
+                                go.transform.parent = rm.transform;
+                                roomManager.rooms[i][j] = go.GetComponent<RoomInfo>();
+                                break;
+                            }
+                            else if(k == 4)
+                            {
+                                int randomNum = Random.Range(0, groundList.endGround_down.Length);
+                                GameObject go = Instantiate(groundList.endGround_down[randomNum], v, Quaternion.identity);
+                                go.transform.parent = rm.transform;
+                                roomManager.rooms[i][j] = go.GetComponent<RoomInfo>();
+                                break;
+
+                            }
+                            else if( k == 8)
+                            {
+                                int randomNum = Random.Range(0, groundList.endGround_up.Length);
+                                GameObject go = Instantiate(groundList.endGround_up[randomNum], v, Quaternion.identity);
+                                go.transform.parent = rm.transform;
+                                roomManager.rooms[i][j] = go.GetComponent<RoomInfo>();
+                                break;
+
+                            }
+                            else {
+                                int randomNum = Random.Range(0, groundList.grounds[k].Count);
+                                GameObject go = Instantiate(groundList.grounds[k][randomNum], v, Quaternion.identity);
+                                go.transform.parent = rm.transform;
+                                roomManager.rooms[i][j] = go.GetComponent<RoomInfo>();
+                                break;
+                            }
                         }
                     }
                     

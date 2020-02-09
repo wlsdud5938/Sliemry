@@ -126,10 +126,10 @@ public class MapCreater : MonoBehaviour
                     break;
             }
             v = new Vector2Int((v.x + 5), v.y + 6);
-            roomManager.waveRooms[j] = new Vector2Int(v.x,v.y);
+            roomManager.waveRooms[j] = new Vector2Int(v.x, v.y);
         }
         //end방 수동 추가
-        Vector2Int v1 = new Vector2Int(path[ran][path[ran].Length-1] % 5, path[ran][path[ran].Length-1] / 5);
+        Vector2Int v1 = new Vector2Int(path[ran][path[ran].Length - 1] % 5, path[ran][path[ran].Length - 1] / 5);
         matrix[3 - v1.y, v1.x] = 0;
         v1 = new Vector2Int((v1.x + 5), v1.y + 6);
         roomManager.waveRooms[path[ran].Length - 1] = new Vector2Int(v1.x, v1.y);
@@ -176,72 +176,18 @@ public class MapCreater : MonoBehaviour
                     Vector2 v = new Vector2(j * 30, (14 - i) * 20);
                     GameObject rm = Instantiate(TBLR[realMatrix[i, j] - 1], v, Quaternion.identity);
 
-
-                    if (realMatrix[i, j] == 1)
+                    for(int k = 1;k<=15;k++)
                     {
-                        int random = Random.Range(0, groundList.endGround_right.Length);
-                        GameObject g = Instantiate(groundList.endGround_right[random], v, Quaternion.identity);
-                        g.transform.parent = rm.transform;
-                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
-                        continue;
+                        if (k == realMatrix[i, j])
+                        {
+                            int randomNum = Random.Range(0, groundList.grounds[k].Count);
+                            GameObject go = Instantiate(groundList.grounds[k][randomNum], v, Quaternion.identity);
+                            go.transform.parent = rm.transform;
+                            roomManager.rooms[i][j] = go.GetComponent<RoomInfo>();
+                            break;
+                        }
                     }
-                    else if (realMatrix[i, j] == 2)
-                    {
-                        int random = Random.Range(0, groundList.endGround_left.Length);
-                        GameObject g = Instantiate(groundList.endGround_left[random], v, Quaternion.identity);
-                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
-                        g.transform.parent = rm.transform;
-                        continue;
-                    }
-                    else if (realMatrix[i, j] == 4)
-                    {
-                        int random = Random.Range(0, groundList.endGround_down.Length);
-                        GameObject g = Instantiate(groundList.endGround_down[random], v, Quaternion.identity);
-                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
-                        g.transform.parent = rm.transform;
-                        continue;
-                    }
-                    else if (realMatrix[i, j] == 8)
-                    {
-                        int random = Random.Range(0, groundList.endGround_up.Length);
-                        GameObject g = Instantiate(groundList.endGround_up[random], v, Quaternion.identity);
-                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
-                        g.transform.parent = rm.transform;
-                        continue;
-                    }
-                    else if ((realMatrix[i, j] & 1) == 1)
-                    {
-                        int random = Random.Range(0, groundList.connectable_right.Length);
-                        GameObject g = Instantiate(groundList.connectable_right[random], v, Quaternion.identity);
-                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
-                        g.transform.parent = rm.transform;
-                        continue;
-                    }
-                    else if ((realMatrix[i, j] & 2) == 2)
-                    {
-                        int random = Random.Range(0, groundList.connectable_left.Length);
-                        GameObject g = Instantiate(groundList.connectable_left[random], v, Quaternion.identity);
-                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
-                        g.transform.parent = rm.transform;
-                        continue;
-                    }
-                    else if ((realMatrix[i, j] & 4) == 4)
-                    {
-                        int random = Random.Range(0, groundList.connectable_down.Length);
-                        GameObject g = Instantiate(groundList.connectable_down[random], v, Quaternion.identity);
-                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
-                        g.transform.parent = rm.transform;
-                        continue;
-                    }
-                    else if ((realMatrix[i, j] & 8) == 8)
-                    {
-                        int random = Random.Range(0, groundList.connectable_up.Length);
-                        GameObject g = Instantiate(groundList.connectable_up[random], v, Quaternion.identity);
-                        roomManager.rooms[i][j] = g.GetComponent<RoomInfo>();
-                        g.transform.parent = rm.transform;
-                        continue;
-                    }
-
+                    
                 }
             }
             Debug.Log(str);

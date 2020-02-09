@@ -5,7 +5,7 @@ using UnityEngine;
 public class GroundList : MonoBehaviour
 {
     // 모든 Ground 프리팹들
-    public RoomInfo[] roomPrefabs;
+    public GameObject[] roomPrefabs;
 
     // 상하좌우 각 연결 가능한 Ground 프리팹들
     public GameObject[] connectable_up, connectable_down, connectable_left, connectable_right;
@@ -13,14 +13,14 @@ public class GroundList : MonoBehaviour
     // 적 및 아군 본진 전용 모서리 방들 상하좌우
     public GameObject[] endGround_up, endGround_down, endGround_left, endGround_right;
     
-    public List<RoomInfo>[] grounds;
+    public List<GameObject>[] grounds;
 
-    public static int UXXX = 0, XDXX = 1, XXLX = 2, XXXR = 3, UDXX = 4, UXLX = 5, UXXR = 6, XDLX = 7, 
-                      XDXR = 8, XXLR = 9, UDLX = 10, UDXR = 11, UXLR = 12, XDLR = 13, UDLR = 14;
+    public static int UXXX = 8, XDXX = 4, XXLX = 2, XXXR = 1, UDXX = 12, UXLX = 10, UXXR = 9, XDLX = 6, 
+                      XDXR = 5, XXLR = 3, UDLX = 14, UDXR = 13, UXLR = 11, XDLR = 7, UDLR = 15;
 
     private void Awake()
     {
-        grounds = new List<RoomInfo>[15];
+        grounds = new List<GameObject>[16];
 
         grounds[UXXX] = GetRooms(true, false, false, false);
         grounds[XDXX] = GetRooms(false, true, false, false);
@@ -40,16 +40,16 @@ public class GroundList : MonoBehaviour
     }
 
     // 입력된 연결 방향에 부합하는 방 리스트 리턴
-    private List<RoomInfo> GetRooms(bool up, bool down, bool left, bool right)
+    private List<GameObject> GetRooms(bool up, bool down, bool left, bool right)
     {
-        List<RoomInfo> rooms = new List<RoomInfo>();        
+        List<GameObject> rooms = new List<GameObject>();        
 
         for(int i = 0; i < roomPrefabs.Length; ++i)
         {
-            if (up && !roomPrefabs[i].up) continue;
-            if (down && !roomPrefabs[i].down) continue;
-            if (left && !roomPrefabs[i].left) continue;
-            if (right && !roomPrefabs[i].right) continue;
+            if (up && !roomPrefabs[i].GetComponent<RoomInfo>().up) continue;
+            if (down && !roomPrefabs[i].GetComponent<RoomInfo>().down) continue;
+            if (left && !roomPrefabs[i].GetComponent<RoomInfo>().left) continue;
+            if (right && !roomPrefabs[i].GetComponent<RoomInfo>().right) continue;
 
             rooms.Add(roomPrefabs[i]);
         }

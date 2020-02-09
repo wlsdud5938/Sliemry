@@ -6,15 +6,22 @@ using DG.Tweening;
 
 public class StatusHudManager : MonoBehaviour
 {
+    // 캐릭터 아이콘
     public Slider hpBar;
     public RectTransform charaChangeCoolTime;
     public GameObject[] charaImages;
+
+    // 체력바 관련
     public Image barFill;
     public Sprite[] barSprites;
+
+    // 장착 아이템 관련
+    public EquippedItemIcon attackItem, defendItem;
 
     private RectTransform hpBarRect;
     private UserStatusData.HealthInfo healthInfo;
     private Vector2 barSize, coolTimeSizeOriginal, coolTimeSize;
+    private UserStatusData userStatus;
 
     public static StatusHudManager Instance;
 
@@ -31,7 +38,11 @@ public class StatusHudManager : MonoBehaviour
 
     private void Start()
     {
-        SetCharacterHud(DataManager.Instance.userData_status.GetPlayingChara());
+        userStatus = DataManager.Instance.userData_status;
+
+        SetCharacterHud(userStatus.GetPlayingChara());
+        attackItem.SetEquippedItem(userStatus.itemEquip_attack);
+        defendItem.SetEquippedItem(userStatus.itemEquip_defend);
     }
 
     public void SetCharacterHud()
@@ -57,7 +68,7 @@ public class StatusHudManager : MonoBehaviour
         barFill.sprite = index == 1 ? barSprites[1] : barSprites[0];
 
         // 바의 길이와 값 조정
-        SetBar(healthInfo.getMaxHP(), healthInfo.getCurrentHP());
+        SetBar(healthInfo.GetMaxHP(), healthInfo.GetCurrentHP());
     }
 
     public void SetBar(int maxHP, int currentHP)

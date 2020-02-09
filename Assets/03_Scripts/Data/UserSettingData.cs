@@ -46,27 +46,23 @@ public class UserSettingData : UserData
     public void SelectSlot(int slot)
     {
         selectedSlot = slot;
-        Save<int>(identifier_selectedSlot, selectedSlot);
     }
 
     // 슬롯 그룹 선택(활성화)
     public void SetActivatedSlotGroupIndex(int slotIndex)
     {
         activatedSlotGroupIndex = slotIndex;
-        SaveData();
     }
 
     // 활성화된 스킬셋에 슬롯 번호와 유닛 인덱스 등록
     public void SetSlot(int slot, int unitIndex)   
     {
         slotGroup[activatedSlotGroupIndex][slot] = unitIndex;
-        SaveData();
     }
 
     public void SetSlot(int slotSetIndex, int slot, int unitIndex) 
     {
         slotGroup[slotSetIndex][slot] = unitIndex;
-        SaveData();
     }
 
     public override void SaveData()

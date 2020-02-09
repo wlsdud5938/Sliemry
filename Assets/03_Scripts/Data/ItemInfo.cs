@@ -7,6 +7,7 @@ public class ItemInfo : MonoBehaviour
     public string itemName;
     public int itemIndex = 0;
     public Sprite itemSprite;
+    public bool isAttackItem;   // 공격용 아이템인지 방어용 아이템인지
     public int value = 1;
 
     private Rigidbody rig;

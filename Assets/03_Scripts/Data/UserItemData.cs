@@ -33,14 +33,12 @@ public class UserItemData : UserData
     {
         userMoney += amount;
         userMoney = userMoney >= moneyLimit ? moneyLimit : userMoney;
-        Save<int>(identifier_userMoney, userMoney);
     }
 
     public void UseMoney(int amount)
     {
         if (userMoney < amount) return;
         userMoney -= amount;
-        Save<int>(identifier_userMoney, userMoney);
     }
 
     public void EarnItem(string itemName, int amount = 1)    // 해당 아이템과 수량 추가 및 저장
@@ -50,10 +48,7 @@ public class UserItemData : UserData
         if (userItemList.ContainsKey(itemName)) userItemList[itemName] += amount;  
         else userItemList.Add(itemName, amount);
 
-        userItemCount += amount;    // 아이템 소지수 증가
-
-        Save<Dictionary<string, int>>(identifier_userItem, userItemList);
-        Save<int>(identifier_userItemCount, userItemCount);
+        userItemCount += amount;    // 아이템 소지수 증가        
     }
 
     public bool UseItem(string itemName, int amount = 1)    // 해당 아이템을 수량만큼 사용 및 저장
@@ -62,9 +57,6 @@ public class UserItemData : UserData
 
         userItemList[itemName] -= amount;
         userItemCount -= amount;    // 아이템 소지수 감소
-
-        Save<Dictionary<string, int>>(identifier_userItem, userItemList);
-        Save<int>(identifier_userItemCount, userItemCount);
 
         return true;
     }

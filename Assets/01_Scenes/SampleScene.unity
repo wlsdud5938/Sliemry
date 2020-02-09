@@ -339,6 +339,61 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5691700992540742541, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 519420028}
+    - target: {fileID: 8409809700224608351, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1080213244}
+    - target: {fileID: 8409809700224608351, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RoomClear
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409809700554813264, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1080213244}
+    - target: {fileID: 8409809700554813264, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MoveDown
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409809700769038467, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1080213244}
+    - target: {fileID: 8409809700769038467, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MoveRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409809701066654539, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1080213244}
+    - target: {fileID: 8409809701066654539, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MoveLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409809701885505191, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1080213244}
+    - target: {fileID: 8409809701885505191, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MoveUp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9de475a4ea32a8459cd55007b18de2f, type: 3}
 --- !u!1 &416250278
@@ -460,7 +515,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8.4375
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -634,6 +689,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1080213244 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6862560999533007104, guid: a9de475a4ea32a8459cd55007b18de2f,
+    type: 3}
+  m_PrefabInstance: {fileID: 312512147}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc3eb19ab19a7ce4d967c05fa69626c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1087046668
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,9 +10,12 @@ public class PlayerMove : MonoBehaviour
     private int characterState = 0; // 현재 캐릭터 상태, 0:그린, 1:화이트, 2:그린 슬라임
 
     private bool isRunning = false; // 현재 뛰는 상태
-    private int dirrection = 0;     // 현재 바라보는 방향, 상 = 0, 하 = 1, 좌 = 2, 우 = 3
+    private int dirrection = 1;     // 현재 바라보는 방향, 상 = 0, 하 = 1, 좌 = 2, 우 = 3
 
     private bool isCharaChangeEnabled = true;   // 캐릭터 전환 가능한 상태인지
+
+    private PlayerHealth playerHealth;
+    private UserStatusData userStatus;
 
     public const int UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3;
 
@@ -25,6 +28,8 @@ public class PlayerMove : MonoBehaviour
     {
         greenAni = green.GetComponent<PlayerSpriteAnimation>();
         whiteAni = white.GetComponent<PlayerSpriteAnimation>();
+
+        playerHealth = GetComponent<PlayerHealth>();
 
         // 방향 벡터 초기화
         upVec = new Vector3(0, 1, 0);
@@ -39,7 +44,8 @@ public class PlayerMove : MonoBehaviour
 
     private void Start()
     {
-        
+        userStatus = DataManager.Instance.userData_status;
+
         if (DataManager.Instance.userData_status.GetPlayingChara() == 0)
         {
             green.SetActive(true);
@@ -59,9 +65,23 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
+        // 데미지 받는 테스트
+        if (Input.GetKeyDown("q")) playerHealth.GetDamage(20);
         // 캐릭터 변경
         if (Input.GetKeyDown("space"))
         {
+            // 다른 캐릭터가 죽었으면 리턴
+            if(userStatus.IsOtherCharacterAlive() == 0)
+            {
+                MessageManager.Instance.ShowMessage(AlarmManager.greenDown);
+                return;
+            }
+            if(userStatus.IsOtherCharacterAlive() == 1)
+            {
+                MessageManager.Instance.ShowMessage(AlarmManager.whiteDown);
+                return;
+            }
+
             // 쿨타임 중이면 리턴
             if (!isCharaChangeEnabled)
             {
@@ -74,10 +94,6 @@ public class PlayerMove : MonoBehaviour
 
             if      (characterState == 0) ChangeWhite();
             else if (characterState == 1) ChangeGreen();
-
-            // 활성화된 캐릭터 정보 저장 및 UI 업데이트
-            DataManager.Instance.userData_status.SetPlayingChara(characterState);
-            StatusHudManager.Instance.SetCharacterHud();
         }
 
         if (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)   // 멈춤
@@ -165,7 +181,10 @@ public class PlayerMove : MonoBehaviour
         green.SetActive(true);
         white.SetActive(false);
 
+        userStatus.SetPlayingChara(characterState);
         greenAni.SetInitialState(isRunning, dirrection);
+        playerHealth.AssignCharacter();
+        StatusHudManager.Instance.SetCharacterHud();
     }
 
     // 화이트로 변경
@@ -175,13 +194,16 @@ public class PlayerMove : MonoBehaviour
         green.SetActive(false);
         white.SetActive(true);
 
+        userStatus.SetPlayingChara(characterState);
         whiteAni.SetInitialState(isRunning, dirrection);
+        playerHealth.AssignCharacter();
+        StatusHudManager.Instance.SetCharacterHud();
     }
 
     public void ChangeState()
     {
         if (characterState == 0) ChangeWhite();
-        else if (characterState == 1) ChangeGreen();
+        else if (characterState == 1) ChangeGreen();        
     }
 
     // 캐릭터 전환 쿨타임 쿨다운

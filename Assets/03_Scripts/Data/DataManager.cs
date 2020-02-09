@@ -21,6 +21,7 @@ public class DataManager : MonoBehaviour
 
     // 게임 데이터 관련
     private UnitInfoManager gameData_Unit = UnitInfoManager.Instance;
+    private ItemInfoManager gameData_Item = ItemInfoManager.Instance;
     
     public static DataManager Instance;
 
@@ -69,6 +70,18 @@ public class DataManager : MonoBehaviour
         userData_item.UseItem(UnitInfoManager.Instance.unitList[unitIndex].buildMaterial);
     }
 
+    public void EquipItem(int index)
+    {
+        ItemInfo item = gameData_Item.itemList[index];
+        // 아이템이 있으면 장착
+        if (userData_item.ItemCount(item.itemName) > 0)
+        {
+            userData_item.UseItem(item.itemName);
+            if (item.isAttackItem) userData_status.itemEquip_attack.Equip(index);
+            else userData_status.itemEquip_defend.Equip(index);
+        }
+    }
+
     public void DataTest()
     {
         DeleteEveryData();
@@ -83,5 +96,7 @@ public class DataManager : MonoBehaviour
         userData_item.EarnItem(UnitInfoManager.Instance.unitList[3].buildMaterial, 5);
         userData_item.EarnItem(UnitInfoManager.Instance.unitList[4].buildMaterial, 2);
         userData_item.EarnMoney(1200);
+
+        EquipItem(2);
     }
 }

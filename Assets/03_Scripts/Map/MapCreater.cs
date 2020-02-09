@@ -165,10 +165,11 @@ public class MapCreater : MonoBehaviour
         for (int i = 0; i < 15; i++)
         {
             string str = "";
+            roomManager.rooms[i] = new RoomInfo[15];
+
             for (int j = 0; j < 15; j++)
             {
                 str += realMatrix[i, j].ToString() + " ";
-                roomManager.rooms[i] = new RoomInfo[15];
 
                 //방생성과 동시에 바닥 생성하고 바닥을 그 방의 자식오브젝트로 둔다.
                 if (realMatrix[i, j] != 0)

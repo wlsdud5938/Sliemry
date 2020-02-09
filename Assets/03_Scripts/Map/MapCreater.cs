@@ -128,6 +128,12 @@ public class MapCreater : MonoBehaviour
             v = new Vector2Int((v.x + 5), v.y + 6);
             roomManager.waveRooms[j] = new Vector2Int(v.x,v.y);
         }
+        //end방 수동 추가
+        Vector2Int v1 = new Vector2Int(path[ran][path[ran].Length-1] % 5, path[ran][path[ran].Length-1] / 5);
+        matrix[3 - v1.y, v1.x] = 0;
+        v1 = new Vector2Int((v1.x + 5), v1.y + 6);
+        roomManager.waveRooms[path[ran].Length - 1] = new Vector2Int(v1.x, v1.y);
+
 
         //문 여느라 시작 끝위치가 지워져서 다시 지정
         matrix[3 - y1, x1] = 1;

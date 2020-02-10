@@ -12,12 +12,30 @@ public class InvenIconManager : MonoBehaviour
     public Text moneyAmount, itemAmount, moneyLimit, itemLimit;     // 숫자로 표시하는 텍스트들
     public GameObject moneyInfo, itemInfo;                          // 껐다켰다 할 오브젝트
     public Image moneyShadow, itemShadow;                           // 투명도 변화 줄 오브젝트
-    
+
+    // 아이템 먹는 효과용 변수들
+    public Transform player;
+    private Camera mainCamera;
+    public GameObject image;
+
+    private ObjectPooling<Image> imagePool;
+    private Vector3 playerPos, moneyPos, itemPos;
+
     public static InvenIconManager Instance;    
 
     private void Awake()
     {
         Instance = this;
+
+        // 아이템 먹는 효과용 이미지 풀 생성
+        imagePool = new ObjectPooling<Image>();
+        imagePool.MakePool(transform, image, 20);
+        mainCamera = FindObjectOfType<Camera>();
+
+        moneyPos = moneyShadow.rectTransform.position;
+        moneyPos.y += 44.0f;
+        itemPos = itemShadow.rectTransform.position;
+        itemPos.y += 44.0f;
     }
 
     private void Start()
@@ -62,5 +80,32 @@ public class InvenIconManager : MonoBehaviour
 
         if (onoff) itemShadow.DOFade(0.3f, 0.1f);
         else itemShadow.DOFade(0, 0.1f);
+    }
+
+    public void ItemGettingEffect(int index)
+    {
+        Image img;
+        img = imagePool.GetObject();
+
+        img.sprite = ItemInfoManager.Instance.itemList[index].itemSprite;
+        img.SetNativeSize();
+
+        playerPos = mainCamera.WorldToScreenPoint(player.position);
+        playerPos.y += 6;
+
+        img.rectTransform.DOMove(playerPos, 0);
+        if(index == 0) img.rectTransform.DOMove(moneyPos, 1.5f).SetEase(Ease.OutQuart);
+        else img.rectTransform.DOMove(itemPos, 1.5f).SetEase(Ease.OutQuart);
+
+        StartCoroutine(GettingEffect(img.gameObject, index == 0));
+    }
+
+    private IEnumerator GettingEffect(GameObject obj, bool isMoney)
+    {
+        yield return new WaitForSeconds(0.8f);
+
+        obj.SetActive(false);
+        if (isMoney) ShowMoney();
+        else ShowItem();
     }
 }

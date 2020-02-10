@@ -91,10 +91,10 @@ public class DataManager : MonoBehaviour
         userData_setting.SetSlot(2, 3);
         userData_setting.SetSlot(3, 4);
 
-        userData_item.EarnItem(UnitInfoManager.Instance.unitList[1].buildMaterial, 2);
-        userData_item.EarnItem(UnitInfoManager.Instance.unitList[2].buildMaterial, 3);
-        userData_item.EarnItem(UnitInfoManager.Instance.unitList[3].buildMaterial, 5);
-        userData_item.EarnItem(UnitInfoManager.Instance.unitList[4].buildMaterial, 2);
+        userData_item.EarnItem(UnitInfoManager.Instance.unitList[1].buildMaterial, 1);
+        userData_item.EarnItem(UnitInfoManager.Instance.unitList[2].buildMaterial, 2);
+        userData_item.EarnItem(UnitInfoManager.Instance.unitList[3].buildMaterial, 1);
+        userData_item.EarnItem(UnitInfoManager.Instance.unitList[4].buildMaterial, 1);
         userData_item.EarnMoney(1200);
 
         EquipItem(2);

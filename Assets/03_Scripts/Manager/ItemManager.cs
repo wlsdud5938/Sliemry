@@ -42,10 +42,10 @@ public class ItemManager : MonoBehaviour
         ItemDrop(transform.position, 0, 90);
         ItemDrop(transform.position, 0, 90);
         ItemDrop(transform.position, 0, 90);
-        ItemDrop(transform.position, 1, 90);
-        ItemDrop(transform.position, 2, 90);
-        ItemDrop(transform.position, 3, 90);
-        ItemDrop(transform.position, 4, 90);
+        ItemDrop(transform.position, 1, 20);
+        ItemDrop(transform.position, 2, 20);
+        ItemDrop(transform.position, 3, 20);
+        ItemDrop(transform.position, 4, 20);
     }
 
     // 아이템 오브젝트 풀 생성

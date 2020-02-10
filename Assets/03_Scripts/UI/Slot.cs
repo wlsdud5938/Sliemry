@@ -44,6 +44,7 @@ public class Slot : MonoBehaviour
         price.text = UnitInfoManager.Instance.unitList[index].buildMoney.ToString();
         // 돈이 부족하면 빨간색으로 표시
         if (amount == -3 || amount == -1) price.color = ColorManager.negativeRed;
+        else price.color = Color.white;
 
         // 아이템 이미지 세팅
         int itemCount = DataManager.Instance.userData_item.ItemCount(ItemInfoManager.Instance.itemList[index].itemName);

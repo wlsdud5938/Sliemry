@@ -29,6 +29,16 @@ public class UserItemData : UserData
 
     public int GetUserItemCount() { return userItemCount; }
 
+    public bool IsItemFull()
+    {
+        return userItemCount >= itemLimit;
+    }
+
+    public bool IsMoneyFull()
+    {
+        return userMoney >= moneyLimit;
+    }
+
     public void EarnMoney(int amount)
     {
         userMoney += amount;

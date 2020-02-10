@@ -10,8 +10,10 @@ public class MessageManager : MonoBehaviour
 
     private int count = 0;                      // 현재 보여지는 메세지 수
     private static float time = 2.0f;           // 메세지가 떠있는 시간
-    private static string empty = "";
-    private IEnumerator countDownCor;
+    private static float coolTime = 1.0f;       // 중복 메세지 쿨타임
+    private bool isCoolDown = true;
+    private static string empty = "", lastText = "";
+    private IEnumerator countDownCor, coolTimeCor;
 
     public static MessageManager Instance;
 
@@ -19,10 +21,26 @@ public class MessageManager : MonoBehaviour
     {
         Instance = this;
         countDownCor = Countdown();
+        coolTimeCor = CoolTime();
     }
 
     public void ShowMessage(string message)
     {
+        // 중복 메세지 쿨타임
+        if (!isCoolDown)
+        {
+            if(string.Compare(lastText, message) == 0)
+            {
+                lastText = message;
+                return;
+            }
+        }
+
+        isCoolDown = false;
+        StopCoroutine(coolTimeCor);
+        coolTimeCor = CoolTime();
+        StartCoroutine(coolTimeCor);
+
         StopCoroutine(countDownCor);
         countDownCor = Countdown();
         StartCoroutine(countDownCor);
@@ -54,6 +72,8 @@ public class MessageManager : MonoBehaviour
             messageTexts[1].text = messageTexts[0].text;
             messageTexts[0].text = message;
         }
+
+        lastText = message;
     }
 
     // 모든 메세지 사라지기
@@ -64,5 +84,11 @@ public class MessageManager : MonoBehaviour
         for (int i = 0; i < 3; ++i) messageTexts[i].text = empty;
         for (int i = 0; i < 3; ++i) messageObjects[i].SetActive(false);
         count = 0;
+    }
+
+    private IEnumerator CoolTime()
+    {
+        yield return new WaitForSeconds(coolTime);
+        isCoolDown = true;
     }
 }

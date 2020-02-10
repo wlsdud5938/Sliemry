@@ -70,7 +70,21 @@ public class UnitManager : MonoBehaviour
     private void MouseDown()
     {
         // 충분한 재료가 없으면 리턴
-        if (DataManager.Instance.BuildableUnitCount(DataManager.Instance.userData_setting.GetSelectedIndex()) <= 0) return;
+        if (DataManager.Instance.BuildableUnitCount(DataManager.Instance.userData_setting.GetSelectedIndex()) == -1)
+        {
+            MessageManager.Instance.ShowMessage(AlarmManager.BothLack);
+            return;
+        }
+        else if (DataManager.Instance.BuildableUnitCount(DataManager.Instance.userData_setting.GetSelectedIndex()) == -2)
+        {
+            MessageManager.Instance.ShowMessage(AlarmManager.itemLack);
+            return;
+        }
+        else if (DataManager.Instance.BuildableUnitCount(DataManager.Instance.userData_setting.GetSelectedIndex()) == -3)
+        {
+            MessageManager.Instance.ShowMessage(AlarmManager.moneyLack);
+            return;
+        }
 
         /*
         int i = 0;  //for 밖에서도 사용되어야하기때문에 for위에 선언

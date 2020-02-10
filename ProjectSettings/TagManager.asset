@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - DownWall
+  - LeftWall
+  - RightWall
+  - UpWall
+  - Map
+  - Gem
+  - UnitManager
+  - Item
   layers:
   - Default
   - TransparentFX

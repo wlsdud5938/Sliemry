@@ -125,13 +125,13 @@ public class MapCreater : MonoBehaviour
                     Debug.Log("뭔가 잘못됨 ㅅㄱ");
                     break;
             }
-            v = new Vector2Int((v.x + 5), v.y + 6);
+            v = new Vector2Int((v.x + 5), (3 - v.y) + 5);
             roomManager.waveRooms[j] = new Vector2Int(v.x, v.y);
         }
         //end방 수동 추가
         Vector2Int v1 = new Vector2Int(path[ran][path[ran].Length - 1] % 5, path[ran][path[ran].Length - 1] / 5);
         matrix[3 - v1.y, v1.x] = 0;
-        v1 = new Vector2Int((v1.x + 5), v1.y + 6);
+        v1 = new Vector2Int((v1.x + 5), (3 - v1.y) + 5);
         roomManager.waveRooms[path[ran].Length - 1] = new Vector2Int(v1.x, v1.y);
 
 
@@ -233,12 +233,6 @@ public class MapCreater : MonoBehaviour
         start.transform.position = s;
         Vector2 e = new Vector2((x2 + 5) * 30, (y2 + 6) * 20);
         end.transform.position = e;
-
-        while (openRoom.Count > 0)
-        {
-            int[] a = openRoom.Dequeue();
-            Debug.Log(a[0].ToString() + " " + a[1].ToString());
-        }
 
     }
 

@@ -126,7 +126,7 @@ public class MapCreater : MonoBehaviour
                     break;
             }
             v = new Vector2Int((v.x + 5), (3 - v.y) + 5);
-            roomManager.waveRooms[j] = new Vector2Int(v.x, v.y);
+            roomManager.waveRooms[j] = new Vector2Int(v.y, v.x);
         }
         //end방 수동 추가
         Vector2Int v1 = new Vector2Int(path[ran][path[ran].Length - 1] % 5, path[ran][path[ran].Length - 1] / 5);

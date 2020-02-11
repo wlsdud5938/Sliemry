@@ -132,7 +132,7 @@ public class MapCreater : MonoBehaviour
         Vector2Int v1 = new Vector2Int(path[ran][path[ran].Length - 1] % 5, path[ran][path[ran].Length - 1] / 5);
         matrix[3 - v1.y, v1.x] = 0;
         v1 = new Vector2Int((v1.x + 5), (3 - v1.y) + 5);
-        roomManager.waveRooms[path[ran].Length - 1] = new Vector2Int(v1.x, v1.y);
+        roomManager.waveRooms[path[ran].Length - 1] = new Vector2Int(v1.y, v1.x);
 
 
         //문 여느라 시작 끝위치가 지워져서 다시 지정

@@ -20,6 +20,7 @@ public class RoomManager : MonoBehaviour
 
     // 입력받는 정보들
     public RoomInfo[][] rooms;          // 배치된 방 정보들
+    public RoomInfo[][] reRooms = new RoomInfo[15][];          // 배치된 방 정보들
     public RoomIcon[][] roomIcons;      // 배치된 정보에 맞는 룸 아이콘들
     public Vector2Int[] waveRooms;      // 웨이브 경로인 방 위치들 (적 본진 -> 아군 본진)
 
@@ -54,11 +55,29 @@ public class RoomManager : MonoBehaviour
         {
             for(int j = 0; j < rooms[i].Length; ++j)
             {
-                if (rooms[i][j] == null) Debug.Log("(" + i + ", " + j + ") 는 비어 있습니다");
-                else
-                {
+                if (rooms[i][j] != null)
                     Debug.Log("(" + i + ", " + j + ") 방의 이름은 + " + rooms[i][j].name);
-                }
+
+            }
+        }
+        Debug.Log("");
+
+        for (int i = 0;i<rooms.Length;i++)
+        {
+            reRooms[i] = new RoomInfo[15];
+            for(int j = 0;j<rooms[i].Length;j++)
+            {
+                reRooms[i][j] = rooms[j][i];
+            }
+        }
+
+        for (int i = 0; i < rooms.Length; ++i)
+        {
+            for (int j = 0; j < rooms[i].Length; ++j)
+            {
+                if (reRooms[i][j] != null)
+                    Debug.Log("(" + i + ", " + j + ") 방의 이름은 + " + reRooms[i][j].name);
+                
             }
         }
 

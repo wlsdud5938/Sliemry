@@ -12,6 +12,8 @@ TagManager:
   - Gem
   - UnitManager
   - Item
+  - Unit
+  - Ground
   layers:
   - Default
   - TransparentFX

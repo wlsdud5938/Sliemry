@@ -16,9 +16,9 @@ public class RoomInfo : MonoBehaviour
 
         public CellInfo(int x, int y, Vector3 roomPos)
         {
-            position = new Vector3(-RoomInfo.roomRow/2 + 0.5f, -RoomInfo.roomCol/2 + 0.5f, 0);
-            position.x += x;
-            position.y += y;
+            position = roomPos;
+            position.x = position.x - RoomInfo.roomRow / 2 + 0.5f + x;
+            position.y = position.y - RoomInfo.roomCol / 2 + 0.5f + y;
         }
     }
 
@@ -111,6 +111,8 @@ public class RoomInfo : MonoBehaviour
                 }
             }
         }
+
+        //Debug.Log(cellInfos[0][0].position.ToString());
 
         //Debug.Log("순회 끝, 활성화된 셀 = " + count);
         colChecker.gameObject.SetActive(false);

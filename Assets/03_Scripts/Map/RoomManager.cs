@@ -16,7 +16,7 @@ public class RoomManager : MonoBehaviour
     public RoomIcon roomIcon;           // 룸 아이콘 프리팹
     public RectTransform miniMap;       // 아이콘들 부모 오브젝트
     public RectTransform currentIcon;   // 현재 방 표시 아이콘
-    public GameObject mainCamera;       // 카메라    
+    public Camera mainCamera;       // 카메라    
 
     // 입력받는 정보들
     public RoomInfo[][] rooms;          // 배치된 방 정보들
@@ -44,6 +44,7 @@ public class RoomManager : MonoBehaviour
     private void Awake()
     {
         RoomManager.instance = this;
+        mainCamera = FindObjectOfType<Camera>();
     }
 
     // 배치정보를 다 받아온 후 실행. 각 방들 초기화, 최종 웨이포인트 설정과 해당 경로의 문 열기, 미니맵 아이콘 표시

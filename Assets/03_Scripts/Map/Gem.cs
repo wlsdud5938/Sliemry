@@ -18,7 +18,7 @@ public class Gem : MonoBehaviour
     private void LateUpdate()
     {
         // 마우스 우클릭으로 구슬 깨기(임시)
-        if (Input.GetMouseButtonDown(1)) Break();
+        //if (Input.GetMouseButtonDown(1)) Break();
     }
 
     // 파괴될 시 해당 방의 몹 스폰

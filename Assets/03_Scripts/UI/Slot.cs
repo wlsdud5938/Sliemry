@@ -45,7 +45,7 @@ public class Slot : MonoBehaviour
         // 돈이 부족하면 빨간색으로 표시
         if (amount == -3 || amount == -1) price.color = ColorManager.negativeRed;
         else price.color = Color.white;
-
+        
         // 아이템 이미지 세팅
         int itemCount = DataManager.Instance.userData_item.ItemCount(ItemInfoManager.Instance.itemList[index].itemName);
         if (itemCount == 0) itemImage.sprite = SlotManager.Instance.itemIcons_grey[index];
@@ -68,12 +68,18 @@ public class Slot : MonoBehaviour
         {
             count = DataManager.Instance.BuildableUnitCount(index);
             amount.text = count > 0 ? count.ToString() : "0";
+
+            if (count == -1 || count == -2) amount.color = ColorManager.negativeRed;
+            else amount.color = Color.white;
         }
         // 전투모드의 경우 아이템의 수
         else
         {
             count = DataManager.Instance.userData_item.ItemCount(ItemInfoManager.Instance.itemList[index].itemName);
             amount.text = count.ToString();
+
+            if (count == 0) amount.color = ColorManager.negativeRed;
+            else amount.color = Color.white;
         }
 
         isBuildable = count > 0;

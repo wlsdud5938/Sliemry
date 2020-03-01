@@ -2130,6 +2130,16 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8409809702064703571, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 53.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409809702064703571, guid: a9de475a4ea32a8459cd55007b18de2f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -36.9
+      objectReference: {fileID: 0}
     - target: {fileID: 3137060069099395622, guid: a9de475a4ea32a8459cd55007b18de2f,
         type: 3}
       propertyPath: testRooms0.Array.size
